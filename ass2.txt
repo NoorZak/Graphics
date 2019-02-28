@@ -1,0 +1,100 @@
+
+package assgraphics;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.*;
+class ShowFrame extends JFrame{
+    int flag;
+    
+    ShowFrame(String t){
+        this.setSize(500,600);
+        this.setVisible(true);
+        Container c = this.getContentPane();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        c.add(new ShowPanel(t));
+        
+    }
+    class ShowPanel extends JPanel implements ActionListener{
+        JButton b1,b2,b3;
+        int x,y;
+        String txt;
+        ShowPanel(String t){
+   this.addMouseListener(new ML(this));
+     b1 = new JButton("Rectangle");
+     b2 = new JButton("Circle");
+     b3 = new JButton("Text");
+     txt=t;
+    b1.addActionListener(this); 
+    b2.addActionListener(this);
+    b3.addActionListener(this);
+    
+    this.add(b1); 
+    this.add(b2);
+    this.add(b3);
+   
+    }
+      public void actionPerformed(ActionEvent e){
+          Object sourse=e.getSource();
+          if(b1==sourse){
+              flag=1;
+          }else
+          if(b2==sourse){
+              flag=2;
+          }else
+          if(b3==sourse){
+              flag=3;
+          }
+          
+      }
+       public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)(g);
+
+           if(flag==1){
+               Rectangle2D rec=new  Rectangle2D.Float(x, y, 50, 100);
+             g2.draw(rec);
+           }else
+               if(flag==2){
+                   Ellipse2D el=new   Ellipse2D.Float(x, y, 100, 100);
+                 g2.draw(el);
+               }else
+                   if(flag==3){
+                     g2.drawString(txt, x, y);  
+                   }
+       }
+    
+     
+      
+      
+     
+    }//panel
+    
+    class ML extends MouseAdapter{
+        ShowPanel panel;
+        ML(ShowPanel p){
+            panel=p;
+        }
+         public void mousePressed(MouseEvent e){
+        panel.x=e.getX();
+        panel.y=e.getY();
+        panel.repaint();
+    }
+    }
+    
+    
+    
+    }//frame
+
+public class Assgraphics {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        String s=JOptionPane.showInputDialog(null,"Enter The String:","string input",1);
+        new ShowFrame(s);
+    }
+    
+}
